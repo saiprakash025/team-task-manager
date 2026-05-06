@@ -3,7 +3,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getDB } = require('../config/db');
+const User = require('../models/User');
 
 const router = express.Router();
 
@@ -20,22 +20,20 @@ router.post(
 
     const { name, email, password } = req.body;
     try {
-      const db = getDB();
-      const [existing] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
-      if (existing.length > 0) {
+      const existing = await User.findOne({ email });
+      if (existing) {
         return res.status(400).json({ message: 'Email already registered' });
       }
 
       const password_hash = await bcrypt.hash(password, 10);
-      const [result] = await db.query(
-        'INSERT INTO users (name, email, password_hash) VALUES (?,?,?)',
-        [name, email, password_hash]
-      );
+      const userDoc = await User.create({ 
+        name, email, password_hash 
+      });
 
-      const user = { id: result.insertId, email, global_role: 'MEMBER' };
-      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' });
+      const payload = { id: userDoc._id, email: userDoc.email, global_role: userDoc.global_role };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-      res.status(201).json({ token, user });
+      res.status(201).json({ token, user: payload });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error' });
@@ -52,18 +50,19 @@ router.post(
 
     const { email, password } = req.body;
     try {
-      const db = getDB();
-      const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
-      if (rows.length === 0) return res.status(400).json({ message: 'Invalid credentials' });
+      
+      const userDoc = await User.findOne({ email });
+      if (!userDoc) return res.status(400).json({ message: 'Invalid credentials' });
 
-      const userRow = rows[0];
-      const isMatch = await bcrypt.compare(password, userRow.password_hash);
+      
+      const isMatch = await bcrypt.compare(password, userDoc.password_hash);
       if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-      const user = { id: userRow.id, email: userRow.email, global_role: userRow.global_role };
-      const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '7d' });
+      const payload = { id: userDoc._id, email: userDoc.email, global_role: userDoc.global_role };
+      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-      res.json({ token, user });
+
+      res.json({ token, user: payload });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error' });

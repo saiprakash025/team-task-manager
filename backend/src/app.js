@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const { initDB } = require('./config/db');
+const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
@@ -15,9 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 
-initDB().catch((err) => {
-  console.error('DB init error:', err);
-});
+connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes);

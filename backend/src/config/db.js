@@ -1,29 +1,14 @@
+// src/config/db.js
+const mongoose = require('mongoose');
 
-const mysql = require('mysql2/promise');
-
-let pool;
-
-async function initDB() {
-  if (!pool) {
-    pool = await mysql.createPool({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-    });
-    console.log('MySQL pool created');
+async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL);
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
   }
-  return pool;
 }
 
-function getDB() {
-  if (!pool) {
-    throw new Error('DB not initialized. Call initDB first.');
-  }
-  return pool;
-}
-
-module.exports = { initDB, getDB };
+module.exports = connectDB;
