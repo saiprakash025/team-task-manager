@@ -24,10 +24,10 @@ A full-stack web application for managing projects and tasks with **role-based a
 |---|---|
 | Frontend | React.js (Vite), React Router DOM, Axios |
 | Backend | Node.js, Express.js v5 |
-| Database | MySQL (hosted on Railway) |
+| Database | MongoDB |
 | Auth | JWT + bcryptjs |
 | Validation | express-validator |
-| Deployment | Railway (backend + DB), Vercel (frontend) |
+| Deployment | Railway (backend + Frontend) |
 
 ---
 
