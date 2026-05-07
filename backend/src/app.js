@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
@@ -28,6 +29,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+
+// Serve React static files
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+// For any route that is NOT an API route, send back index.html
+// This allows React Router to handle /login, /dashboard, etc.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../frontend/dist', 'index.html'));
+});
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
