@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/axiosInstance';
+import { useAuth } from '../context/AuthContext';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [form, setForm] = useState({ name: '', description: '' });
   const [showForm, setShowForm] = useState(false);
+  const { user } = useAuth();
 
-  useEffect(() => { fetchProjects(); }, []);
+  useEffect(() => {
+    fetchProjects();
+  }, []);
 
   async function fetchProjects() {
     const res = await api.get('/projects');
@@ -26,10 +30,12 @@ export default function ProjectsPage() {
     <div style={styles.page}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <h1>My Projects</h1>
-        <button style={styles.btn} onClick={() => setShowForm(!showForm)}>+ New Project</button>
+        {user?.global_role === 'ADMIN' && (
+          <button style={styles.btn} onClick={() => setShowForm(!showForm)}>+ New Project</button>
+        )}
       </div>
 
-      {showForm && (
+      {showForm && user?.global_role === 'ADMIN' && (
         <form onSubmit={handleCreate} style={styles.form}>
           <input
             placeholder="Project name"
@@ -39,7 +45,7 @@ export default function ProjectsPage() {
             required
           />
           <input
-            placeholder="Description (optional)"
+            placeholder="Description"
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             style={styles.input}
@@ -49,13 +55,16 @@ export default function ProjectsPage() {
       )}
 
       {projects.length === 0 ? (
-        <p style={{ color: '#7a7974', marginTop: '32px', textAlign: 'center' }}>No projects yet. Create one above!</p>
+        <p style={{ color: '#7a7974', marginTop: '32px', textAlign: 'center' }}>No projects yet.</p>
       ) : (
         <div style={styles.grid}>
           {projects.map((p) => (
-            <Link to={`/projects/${p.id}`} key={p.id} style={styles.card}>
+            <Link to={`/projects/${p._id}`} key={p._id} style={styles.card}>
               <h3 style={{ marginBottom: '8px' }}>{p.name}</h3>
               <p style={{ color: '#7a7974', fontSize: '14px' }}>{p.description || 'No description'}</p>
+              <p style={{ marginTop: '10px', fontSize: '13px', color: '#01696f', fontWeight: 600 }}>
+                My Role: {p.currentUserRole}
+              </p>
             </Link>
           ))}
         </div>
