@@ -32,7 +32,11 @@ app.use('/api/dashboard', dashboardRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('*', (req, res) => {
+// Serve React static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Fallback: send index.html for all unmatched routes (SPA support)
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
