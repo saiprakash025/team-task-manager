@@ -11,7 +11,13 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://skillful-balance-production-3c2c.up.railway.app' 
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 
