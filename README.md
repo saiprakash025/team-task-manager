@@ -80,67 +80,6 @@ team-task-manager/
 
 ---
 
-## ⚙️ Local Setup
-
-### Prerequisites
-
-- Node.js v18+
-- MySQL running locally or on Railway
-- Git
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/saiprakash025/team-task-manager.git
-cd team-task-manager
-```
-
-### 2. Backend setup
-
-```bash
-cd backend
-npm install
-```
-
-Create `backend/.env`:
-
-```env
-PORT=4000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_NAME=teamtaskdb
-JWT_SECRET=your_jwt_secret_here
-```
-
-Start the backend:
-
-```bash
-npm run dev
-```
-
-### 3. Frontend setup
-
-```bash
-cd ../frontend
-npm install
-```
-
-Create `frontend/.env`:
-
-```env
-VITE_API_URL=http://localhost:4000/api
-```
-
-Start the frontend:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173)
-
----
 
 ## 🔐 Role-Based Access Control
 
@@ -199,32 +138,7 @@ Open [http://localhost:5173](http://localhost:5173)
 | Role | Email | Password |
 |---|---|---|
 | Admin | `admin@teamtask.local` | `Admin@123` |
-| Member 1 | `member1@teamtask.local` | `Member@123` |
 | Member 2 | `member2@teamtask.local` | `Member@123` |
-
-**Demo project:** `Alpha Launch` with 5 tasks across statuses, priorities, and 1 overdue task visible on the Admin dashboard.
-
----
-
-## 🚢 Deployment
-
-### Backend → Railway
-
-1. Push code to GitHub
-2. Create a new Railway project → add **MySQL** database service
-3. Create a **Node.js** service linked to your GitHub repo
-4. Set root directory to `backend`
-5. Add environment variables: `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, `JWT_SECRET`
-6. Railway auto-assigns `PORT` — ensure `server.js` uses `process.env.PORT`
-
-### Frontend → Vercel
-
-1. Import repo on [vercel.com](https://vercel.com)
-2. Set **Root Directory** to `frontend`
-3. Add environment variable: `VITE_API_URL` = your Railway backend URL
-4. Deploy — Vercel handles the Vite build automatically
-
----
 
 ## 👨‍💻 Author
 
