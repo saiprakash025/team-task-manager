@@ -41,7 +41,7 @@ team-task-manager/
 │       ├── server.js                  # Entry point — starts Express server
 │       ├── app.js                     # Express app setup, middleware, routes
 │       ├── config/
-│       │   └── db.js                  # MySQL connection pool
+│       │   └── db.js                  
 │       ├── models/
 │       │   ├── User.js                # User queries
 │       │   ├── Project.js             # Project queries
