@@ -27,4 +27,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Team-Task-Manager API is running' });
+});
+
 module.exports = app;
