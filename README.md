@@ -2,7 +2,7 @@
 
 A full-stack web application for managing projects and tasks with **role-based access control (Admin / Member)**. Admins control all project and task operations. Members can only view and update tasks assigned to them.
 
-🔗 **Live Demo:** https://skillful-balance-production-3c2c.up.railway.app/login
+🔗 **Live Demo:** https://skillful-balance-production-3c2c.up.railway.app
 📁 **Repo:** [github.com/saiprakash025/team-task-manager](https://github.com/saiprakash025/team-task-manager)
 
 ---
