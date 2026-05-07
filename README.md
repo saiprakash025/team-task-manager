@@ -33,35 +33,38 @@ A full-stack web application for project and task management with **role-based a
 
 ##  Project Structure
 team-task-manager/
+│
 ├── backend/
 │ └── src/
-│ ├── server.js
-│ ├── routes/
-│ │ ├── authRoutes.js
-│ │ ├── projectRoutes.js
-│ │ ├── taskRoutes.js
-│ │ └── dashboardRoutes.js
-│ ├── middleware/
-│ │ ├── authMiddleware.js
-│ │ └── roleMiddleware.js
-│ └── db/
-│ └── connection.js
+│ ├── server.js # Entry point — starts Express server
+│ ├── app.js # Express app setup, middleware, routes
+│ ├── config/ # DB connection config
+│ ├── models/ 
+│ ├── middlewares/ # auth middleware, role check middleware
+│ └── routes/
+│ ├── authRoutes.js # POST /api/auth/signup, /login
+│ ├── projectRoutes.js # CRUD projects + member management
+│ ├── taskRoutes.js # CRUD tasks (admin only for write)
+│ └── dashboardRoutes.js # GET /api/dashboard/overview
+│
 └── frontend/
 └── src/
+├── main.jsx 
+├── App.jsx 
+├── App.css / index.css 
 ├── api/
-│ └── axiosInstance.js
+│ └── axiosInstance.js 
 ├── context/
-│ └── AuthContext.jsx
+│ └── AuthContext.jsx 
 ├── components/
-│ ├── Navbar.jsx
-│ └── PrivateRoute.jsx
+│ ├── Navbar.jsx 
+│ └── PrivateRoute.jsx 
 └── pages/
 ├── LoginPage.jsx
 ├── SignupPage.jsx
-├── DashboardPage.jsx
-├── ProjectsPage.jsx
+├── DashboardPage.jsx 
+├── ProjectsPage.jsx 
 └── ProjectDetailPage.jsx
-
 
 ##  Role-Based Access Control
 
